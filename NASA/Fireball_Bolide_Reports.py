@@ -5,6 +5,15 @@ import matplotlib.pyplot as plt
 import plotly.express as px
 import plotly.graph_objects as go
 
+##################################################################
+# Data downloaded from NASA Open Source Datasets:
+# URL: https://data.nasa.gov/Space-Science/Fireball-And-Bolide-Reports/mc52-syum/about_data
+# DL-Date: Friday August 9th, 2024
+# Author (code): Peter Clark / git: peter-clark
+##################################################################
+
+
+
 # Locate Data
 print()
 data_file = "./NASA/Fireball_And_Bolide_Reports_20240808.csv"
