@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import plotly.express as px
-
+import plotly.graph_objects as go
 
 # Locate Data
 print()
@@ -41,7 +41,7 @@ import plotly.express as px
 print()
 data_file = "./NASA/Fireball_And_Bolide_Reports_20240808.csv"
 data = pd.read_csv(data_file)
-print(data.sort_values(by='Total Radiated Energy (J)'))
+#print(data.sort_values(by='Total Radiated Energy (J)'))
 
 def coord_fix(coordinate):
     # coordinate[:-1] is DIRECTION Letter.
@@ -63,7 +63,6 @@ exp = data[['Latitude (Deg)', 'Longitude (Deg)', 'Total Radiated Energy (J)', 'C
 data['log Calculated Total Impact Energy (kt)'] = np.log(data['Calculated Total Impact Energy (kt)'])
 data['log Calculated Total Impact Energy (kt)'] = data['log Calculated Total Impact Energy (kt)'].apply(lambda x: 0.5 if x<0.0 else x)
 
-
 color_scale = [(0, 'green'),(1,'red')]
 figure = px.scatter_mapbox(data,
                            lat='Latitude (Deg)',
@@ -82,6 +81,19 @@ figure.update_layout(mapbox_style="carto-positron")
 figure.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 figure.update_layout()
 figure.show()
+
+
+#fig, ax = plt.subplots(figsize=(10,8))
+
+ax = px.scatter_3d(data, x='Velocity Components (km/s): vx', y='Velocity Components (km/s): vy', 
+                   z='Velocity Components (km/s): vz', color='log Calculated Total Impact Energy (kt)')
+x_range = data['Velocity Components (km/s): vx'].min(), data['Velocity Components (km/s): vx'].max()
+y_range = data['Velocity Components (km/s): vy'].min(), data['Velocity Components (km/s): vy'].max()
+z_range = data['Velocity Components (km/s): vz'].min(), data['Velocity Components (km/s): vz'].max()
+ax.add_trace(go.Scatter3d(x=x_range, y=[0,0], z=[0,0], mode='lines', line=dict(color='red', width=2)))
+ax.add_trace(go.Scatter3d(x=[0,0], y=y_range, z=[0,0], mode='lines', line=dict(color='green', width=2)))
+ax.add_trace(go.Scatter3d(x=[0,0], y=[0,0], z=z_range, mode='lines', line=dict(color='blue', width=2)))
+ax.show()
 
 
 
